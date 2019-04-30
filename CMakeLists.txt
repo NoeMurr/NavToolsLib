@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.8)
 project(NavToolsLib)
 
-## setting the options --------------------------------------------------------
+## setting the options ========================================================
 option(NTL_STATIC "build static library libnavtools" ON)
 option(NTL_SHARED "build shared library libnavtools" OFF)
 
-## dependencies ---------------------------------------------------------------
+## dependencies ===============================================================
 # fmt
 find_package(fmt REQUIRED)
 set(CATCH_2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch)
 
-## Sources and includes -------------------------------------------------------
+## Sources and includes =======================================================
 set(libnavtools_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Longitude.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/DegreeValue.cpp
@@ -34,12 +34,13 @@ set(libnavtools_INCLUDE_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/GES.hpp
 )
 
-# adding object lib
+# Compilation of the library objects ==========================================
 add_library(NavToolsLib OBJECT ${libnavtools_INCLUDE_FILE} ${libnavtools_SRC})
 target_compile_features(NavToolsLib PRIVATE cxx_std_17)
 target_compile_options(NavToolsLib PRIVATE -Wextra -Werror)
 target_link_libraries(NavToolsLib fmt::fmt)
 
+# Creation of static library ==================================================
 if (${NTL_STATIC})
     add_library(NavToolsLib_static STATIC $<TARGET_OBJECTS:NavToolsLib>)
     target_include_directories(
@@ -48,6 +49,7 @@ if (${NTL_STATIC})
     )
 endif()
 
+# Creation of shared library =================================================
 if (${NTL_SHARED})
     add_library(NavToolsLib_shared SHARED $<TARGET_OBJECTS:NavToolsLib>)
     target_include_directories(
@@ -59,13 +61,13 @@ endif()
 ## Tests ======================================================================
 enable_testing()
 add_executable(testNavToolsLib
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/main-test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/Latitude-test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/Longitude-test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/Point-test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/rhumbline-test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/Course-test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests/GES-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/main-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/Latitude-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/Longitude-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/Point-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/rhumbline-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/Course-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/GES-test.cpp
 )
 target_include_directories(
     testNavToolsLib PRIVATE
@@ -88,7 +90,6 @@ elseif(${NTL_SHARED})
         fmt::fmt
     )
 endif ()
-
 
 # 1 test foreach tag
 add_test(ntl::Latitude testNavToolsLib [latitude])
