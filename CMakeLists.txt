@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 project(NavToolsLib)
 
-include(cmake/GitUtils.cmake)
-enable_testing()
-
 ## setting the options --------------------------------------------------------
 option(NTL_STATIC "build static library libnavtools" ON)
 option(NTL_SHARED "build shared library libnavtools" OFF)
@@ -11,6 +8,7 @@ option(NTL_SHARED "build shared library libnavtools" OFF)
 ## dependencies ---------------------------------------------------------------
 # fmt
 find_package(fmt REQUIRED)
+set(CATCH_2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch)
 
 ## Sources and includes -------------------------------------------------------
 set(libnavtools_SRC
@@ -36,23 +34,13 @@ set(libnavtools_INCLUDE_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/GES.hpp
 )
 
-## checking if the library should be compiled ---------------------------------
-if (NOT NTL_STATIC AND NOT NTL_SHARED)
-    message(
-        SEND_ERROR
-        "Neither NTL_STATIC or NTL_SHARED has beed set to ON,"
-        " skipping NavToolsLib"
-    )
-    return()
-endif ()
-
 # adding object lib
 add_library(NavToolsLib OBJECT ${libnavtools_INCLUDE_FILE} ${libnavtools_SRC})
 target_compile_features(NavToolsLib PRIVATE cxx_std_17)
 target_compile_options(NavToolsLib PRIVATE -Wextra -Werror)
 target_link_libraries(NavToolsLib fmt::fmt)
 
-if (NTL_STATIC)
+if (${NTL_STATIC})
     add_library(NavToolsLib_static STATIC $<TARGET_OBJECTS:NavToolsLib>)
     target_include_directories(
         NavToolsLib_static INTERFACE
@@ -60,7 +48,7 @@ if (NTL_STATIC)
     )
 endif()
 
-if (NTL_SHARED)
+if (${NTL_SHARED})
     add_library(NavToolsLib_shared SHARED $<TARGET_OBJECTS:NavToolsLib>)
     target_include_directories(
         NavToolsLib_shared INTERFACE
@@ -68,7 +56,8 @@ if (NTL_SHARED)
     )
 endif()
 
-## create tests
+## Tests ======================================================================
+enable_testing()
 add_executable(testNavToolsLib
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/main-test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/Latitude-test.cpp
@@ -81,11 +70,30 @@ add_executable(testNavToolsLib
 target_include_directories(
     testNavToolsLib PRIVATE
     "$<BUILD_INTERFACE:${NavToolsLib_INCLUDE_DIRS}>"
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/deps/catch>"
+    "$<BUILD_INTERFACE:${CATCH_2_DIR}>"
 )
 
-target_link_libraries(
-    testNavToolsLib ${NavToolsLib_LIBS}
-    fmt::fmt
-)
-add_test(NavToolsLibTest testNavToolsLib)
+if (${NTL_STATIC})
+    message(STATUS "Static library found... Linking tests with it")
+    target_link_libraries(
+        testNavToolsLib
+        NavToolsLib_static
+        fmt::fmt
+    )
+elseif(${NTL_SHARED})
+    message(STATUS "Shared library found... Linking tests with it")
+    target_link_libraries(
+        testNavToolsLib
+        NavToolsLib_shared
+        fmt::fmt
+    )
+endif ()
+
+
+# 1 test foreach tag
+add_test(ntl::Latitude testNavToolsLib [latitude])
+add_test(ntl::Longitude testNavToolsLib [longitude])
+add_test(ntl::Point testNavToolsLib [point])
+add_test(ntl::Rhumbline testNavToolsLib [rhumbline])
+add_test(ntl::GES testNavToolsLib [GES])
+add_test(ntl::Course testNavToolsLib [course])
