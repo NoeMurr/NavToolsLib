@@ -37,7 +37,7 @@ set(libnavtools_INCLUDE_FILE
 # Compilation of the library objects ==========================================
 add_library(NavToolsLib OBJECT ${libnavtools_INCLUDE_FILE} ${libnavtools_SRC})
 target_compile_features(NavToolsLib PRIVATE cxx_std_17)
-target_compile_options(NavToolsLib PRIVATE -Wextra -Werror)
+target_compile_options(NavToolsLib PRIVATE -Wextra -Werror -Wpedantic)
 target_link_libraries(NavToolsLib fmt::fmt)
 
 # Creation of static library ==================================================
@@ -45,7 +45,8 @@ if (${NTL_STATIC})
     add_library(NavToolsLib_static STATIC $<TARGET_OBJECTS:NavToolsLib>)
     target_include_directories(
         NavToolsLib_static INTERFACE
-        $<INSTALL_INTERFACE:hdr/navtools>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hdr>
+        $<INSTALL_INTERFACE:include>
     )
 endif()
 
@@ -54,7 +55,8 @@ if (${NTL_SHARED})
     add_library(NavToolsLib_shared SHARED $<TARGET_OBJECTS:NavToolsLib>)
     target_include_directories(
         NavToolsLib_shared INTERFACE
-        $<INSTALL_INTERFACE:hdr/navtools>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hdr>
+        $<INSTALL_INTERFACE:include>
     )
 endif()
 
