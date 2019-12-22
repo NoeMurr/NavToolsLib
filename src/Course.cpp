@@ -4,12 +4,12 @@
 
 
 #include <stdexcept>
-#include "../hdr/navtools/Course.hpp"
-#include "../hdr/navtools/utils/mathUtils.hpp"
+#include <navtools/Course.hpp>
+#include <navtools/utils/mathUtils.hpp>
 
 using namespace ntl;
 
-Course::Course(double value) noexcept(false) {
+Course::Course(double value) noexcept(false) : value(0.0) {
     setValue(value);
 }
 

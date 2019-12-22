@@ -33,3 +33,7 @@
 
 # Cmake build directories
 cmake-build-*
+
+# intellij directory
+.idea/codeStyles
+.idea/

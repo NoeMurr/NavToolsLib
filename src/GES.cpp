@@ -4,8 +4,8 @@
 // Created by Noè Murr on 2018-11-28.
 //
 
-#include "../hdr/navtools/GES.hpp"
-#include "../hdr/navtools/utils/mathUtils.hpp"
+#include <navtools/GES.hpp>
+#include <navtools/utils/mathUtils.hpp>
 #include <cmath>
 
 using namespace ntl;

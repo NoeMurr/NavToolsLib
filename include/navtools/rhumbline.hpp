@@ -34,7 +34,7 @@ namespace ntl {
             const Ellipsoid &reference = Ellipsoid::getStd("WGS-84")
         );
 
-        Rhumbline(const Rhumbline &oth);
+        Rhumbline(const Rhumbline &oth) = default;
 
         Rhumbline &operator=(const Rhumbline &oth) = default;
 

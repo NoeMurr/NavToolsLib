@@ -23,15 +23,15 @@ set(libnavtools_SRC
 )
 
 set(libnavtools_INCLUDE_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/Longitude.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/DegreeValue.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/Latitude.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/utils/mathUtils.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/Point.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/rhumbline.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/Course.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/Ellipsoid.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/hdr/navtools/GES.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/navtools/Longitude.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/navtools/DegreeValue.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/navtools/Latitude.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/navtools/utils/mathUtils.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/navtools/Point.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/navtools/rhumbline.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/navtools/Course.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/navtools/Ellipsoid.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/navtools/GES.hpp
 )
 
 # Compilation of the library objects ==========================================
@@ -39,13 +39,14 @@ add_library(NavToolsLib OBJECT ${libnavtools_INCLUDE_FILE} ${libnavtools_SRC})
 target_compile_features(NavToolsLib PRIVATE cxx_std_17)
 target_compile_options(NavToolsLib PRIVATE -Wextra -Werror -Wpedantic)
 target_link_libraries(NavToolsLib fmt::fmt)
+target_include_directories(NavToolsLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Creation of static library ==================================================
 if (${NTL_STATIC})
     add_library(NavToolsLib_static STATIC $<TARGET_OBJECTS:NavToolsLib>)
     target_include_directories(
         NavToolsLib_static INTERFACE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hdr>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
     )
 endif()
@@ -55,7 +56,7 @@ if (${NTL_SHARED})
     add_library(NavToolsLib_shared SHARED $<TARGET_OBJECTS:NavToolsLib>)
     target_include_directories(
         NavToolsLib_shared INTERFACE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hdr>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
     )
 endif()

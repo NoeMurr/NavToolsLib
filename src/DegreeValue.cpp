@@ -2,8 +2,8 @@
 // Created by Noè Murr on 28/08/2017.
 //
 
-#include "../hdr/navtools/DegreeValue.hpp"
-#include "../hdr/navtools/utils/mathUtils.hpp"
+#include <navtools/DegreeValue.hpp>
+#include <navtools/utils/mathUtils.hpp>
 #include <iomanip>
 #include <fmt/format.h>
 

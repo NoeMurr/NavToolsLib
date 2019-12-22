@@ -2,10 +2,10 @@
 // Created by Noè Murr on 29/08/2017.
 //
 
-#include "../hdr/navtools/rhumbline.hpp"
-#include "../hdr/navtools/utils/mathUtils.hpp"
-#include "../hdr/navtools/Ellipsoid.hpp"
-#include "../hdr/navtools/Longitude.hpp"
+#include <navtools/rhumbline.hpp>
+#include <navtools/utils/mathUtils.hpp>
+#include <navtools/Ellipsoid.hpp>
+#include <navtools/Longitude.hpp>
 #include <cmath>
 #include <sstream>
 #include <fmt/ostream.h>
@@ -33,7 +33,7 @@ static double meridionalDistance(const Latitude &lat, const Ellipsoid &ref) {
 }
 
 static Longitude arrivalLongitude(
-    Point departure, Course course, double distance,
+    const Point& departure, Course course, double distance,
     const Latitude &arrivalLat, const Ellipsoid &ref, bool round = true
 ) {
     using namespace ntl::utils;
@@ -75,7 +75,7 @@ static Longitude arrivalLongitude(
 }
 
 static Course courseBetween(
-    Point departure, Point arrival, const Ellipsoid &ref
+    const Point& departure, const Point& arrival, const Ellipsoid &ref
 ) {
     // precision only up to 5º digits after dot.
     using namespace ntl::utils;
@@ -312,11 +312,6 @@ Point Rhumbline::getIntersection(
 
     return Point(intersectionLat, meridian);
 }
-
-Rhumbline::Rhumbline(const Rhumbline &oth)
-    : departure(oth.departure), arrival(oth.arrival), course(oth.course),
-      reference(oth.reference), distance(oth.distance){}
-
 
 Rhumbline::NoIntersectionError::NoIntersectionError(
     const Rhumbline &rhumb,

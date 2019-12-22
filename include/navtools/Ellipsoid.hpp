@@ -7,7 +7,7 @@
 #ifndef NAVTOOLS_ELLIPSOID_HPP
 #define NAVTOOLS_ELLIPSOID_HPP
 
-#include <math.h>
+#include <cmath>
 #include <string>
 #include <ostream>
 #include <vector>

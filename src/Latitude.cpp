@@ -2,8 +2,8 @@
 // Created by Noè Murr on 28/08/2017.
 //
 
-#include "../hdr/navtools/Latitude.hpp"
-#include "../hdr/navtools/utils/mathUtils.hpp"
+#include <navtools/Latitude.hpp>
+#include <navtools/utils/mathUtils.hpp>
 #include <cmath>
 #include <fmt/format.h>
 

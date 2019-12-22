@@ -2,7 +2,7 @@
 // Created by Noè Murr on 08/10/2018.
 //
 
-#include "../hdr/navtools/Ellipsoid.hpp"
+#include <navtools/Ellipsoid.hpp>
 #include <cmath>
 #include <algorithm>
 

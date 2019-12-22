@@ -15,8 +15,8 @@ namespace ntl {
         Longitude longitude;
 
         explicit Point(
-            const Latitude &latitude    = Latitude(),
-            const Longitude &longitude  = Longitude()
+            Latitude latitude    = Latitude(),
+            Longitude longitude  = Longitude()
         );
 
         bool operator==(const Point &o) const;

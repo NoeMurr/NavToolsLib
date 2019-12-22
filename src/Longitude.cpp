@@ -2,7 +2,7 @@
 // Created by Noè Murr on 28/08/2017.
 //
 
-#include "../hdr/navtools/Longitude.hpp"
+#include <navtools/Longitude.hpp>
 #include <fmt/format.h>
 
 ntl::Longitude::Longitude(

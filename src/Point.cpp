@@ -2,7 +2,8 @@
 // Created by Noè Murr on 28/08/2017.
 //
 
-#include "../hdr/navtools/Point.hpp"
+#include <navtools/Point.hpp>
+#include <utility>
 
 std::ostream &ntl::operator<<(std::ostream &out, const Point &obj) {
     out << "{Lat: " << obj.latitude << ", Long: " << obj.longitude << "}";
@@ -18,8 +19,8 @@ bool ntl::Point::operator!=(const ntl::Point &o) const {
 }
 
 ntl::Point::Point(
-    const ntl::Latitude &latitude,
-    const ntl::Longitude &longitude
-) : latitude(latitude), longitude(longitude) {}
+    ntl::Latitude latitude,
+    ntl::Longitude longitude
+) : latitude(std::move(latitude)), longitude(std::move(longitude)) {}
 
 
